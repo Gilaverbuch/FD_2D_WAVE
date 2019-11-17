@@ -1,4 +1,4 @@
-# FD_1D_WAVE
+# FD_2D_WAVE
 1D finite difference wave propagation. 
 
 To compile the program run "make" in the terminal. It uses GNU g++ compiler. 
