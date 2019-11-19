@@ -15,7 +15,7 @@ model_parameters::model_parameters(){
 
 	std::ifstream inFile;
 	std::string line;
-	double data[7], v_max;
+	double data[9], v_max;
 	int i=0;
 
 
@@ -29,12 +29,14 @@ model_parameters::model_parameters(){
 	  }
 
 	time = int(data[0]);  
-	dx = int(data[1]); 
-	stability = data[2];
-	frequency = data[3];
-	source_time_delay = data[4];
-	x_s = data[5];
-	print_int = data[6];
+	dx = int(data[1]);
+	dy = int(data[2]); 
+	stability = data[3];
+	frequency = data[4];
+	source_time_delay = data[5];
+	x_s = data[6];
+	y_s = data[7];
+	print_int = data[8];
 
 	read_vel_profile();
 	l = x_range[layers-1];
@@ -61,8 +63,9 @@ void model_parameters::print_parameters(){
 	std::cout << "MODEL PARAMETERS:" << std::endl;
 	std::cout << "length" << " " << l << " " << "m" << std::endl;
 	std::cout << "dx" << " " << dx << " " << "m" << std::endl;
-	std::cout << "source position" << " " << x_s << " " << "m" << std::endl;
-	std::cout << "number of elements" << " " << elements << std::endl;
+	std::cout << "dy" << " " << dx << " " << "m" << std::endl;
+	std::cout << "source position (x,y)" << " " << x_s << " " << "m" << " " << y_s << " " << "m" << std::endl;
+	std::cout << "number of elements" << " " << elements <<"X" << elements << std::endl;
 	std::cout << "dt" << " " << dt << " " << "sec" << std::endl;
 	std::cout << "frequency" << " " << frequency << " " << "Hz" << std::endl;
 	std::cout << "source_time_delay" << " " << source_time_delay << " " << "sec" << std::endl;

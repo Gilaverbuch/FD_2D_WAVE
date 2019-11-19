@@ -1,7 +1,9 @@
 time = 25			; //[sec]
 dx_ = 10			; //[m]
+dy_ = 10			; //[m]
 stability = 0.9		; //[]
 frequency_ = 5		; //[Hz]
 s_time_delay_ = 2	; // [sec]
 x_s_ = 5000			; //[m]
+y_s_ = 5000			; //[m]
 print_int_ = 50		; // print every number of timesteps
