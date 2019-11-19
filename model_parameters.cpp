@@ -40,7 +40,8 @@ model_parameters::model_parameters(){
 
 	read_vel_profile();
 	l = x_range[layers-1];
-	elements = int (l/dx);
+	elements_x = int (l/dx);
+	elements_y = elements_x;
 
 	v_max = 0;
 	for (i=0; i<layers; i++){
@@ -65,7 +66,7 @@ void model_parameters::print_parameters(){
 	std::cout << "dx" << " " << dx << " " << "m" << std::endl;
 	std::cout << "dy" << " " << dx << " " << "m" << std::endl;
 	std::cout << "source position (x,y)" << " " << x_s << " " << "m" << " " << y_s << " " << "m" << std::endl;
-	std::cout << "number of elements" << " " << elements <<"X" << elements << std::endl;
+	std::cout << "number of elements" << " " << elements_x <<"X" << elements_y << std::endl;
 	std::cout << "dt" << " " << dt << " " << "sec" << std::endl;
 	std::cout << "frequency" << " " << frequency << " " << "Hz" << std::endl;
 	std::cout << "source_time_delay" << " " << source_time_delay << " " << "sec" << std::endl;

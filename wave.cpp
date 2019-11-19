@@ -15,7 +15,7 @@ int main()
 
 	model_parameters model;
 	model.print_parameters();
-	// Field displacement(model);
+	Field displacement(model);
 	// displacement.Propagator();
 
 	// std::cout << "number of elements" << " " << elements_ << std::endl;
