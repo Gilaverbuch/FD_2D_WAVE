@@ -12,7 +12,7 @@ public:
 	
 private:
 	void initialize(int size_x, int size_y, double **A, std::vector<int>  x_range, std::vector<double> val);
-	// void print_to_file(int size, double *A, double *pos, int itteration);
+	void print_to_file(int size_x, int size_y, double **A, double *pos_x, double *pos_y, int itteration);
 	
 
 };

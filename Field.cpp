@@ -63,74 +63,87 @@ Field::Field(model_parameters & M){
 	
 	// calculating lambda and x and y
 	for (i=0; i<elements_y; i++){
-		y[i] = (i-1) * dy;
+		y[i] = i * dy;
 		for (j=0; j<elements_x; j++){
-			x[j] = (j-1) * dx;
+			x[j] = j * dx;
 			lambda[i][j] = rho[i][j] * pow(vel[i][j],2);
+
 		}	
 	}
-	
+
+
 
 }
 // ------------------------------------------------------------------------------------------------------------------
 
-// void Field::Propagator(){
+void Field::Propagator(){
 	
-// 	double source, A, B;
-// 	int i, j, itteration, pos;
-// 	std::cout << "wave propagation!!!" << std::endl;
-// 	system("rm results/*.txt");
-
-// 	// initial conditions
-// 	// double a=5.5e-6;
-// 	// for (i=0; i<elements; i++){
-// 	// 	U[i] = exp(-a * pow((x[i] - x_source), 2));
-// 	// 	U_past[i] = exp(-a * pow((x[i] - (x_source - vel[i]*dt)), 2));
-// 	// }
-
-// 	pos = int(x_source/dx);
-// 	itteration = 0;
-// 	print_to_file(elements, U, x, itteration);
+	double source, d2x, d2y;
+	int i, j, k, itteration, pos_s_x, pos_s_y;
+	std::cout << "wave propagation!!!" << std::endl;
+	system("rm results/*.txt");
 
 
-// 	// propagator
+	pos_s_x = int(x_source/dx);
+	pos_s_y = int(y_source/dy);
+	itteration = 0;
+	print_to_file(elements_x, elements_y, U, x, y, itteration);
 
-// 	for (i=0; i<steps; i++){
-// 		source = -2 * (i*dt - source_time_delay) * pow(frequency, 2) * exp(-1 * pow(frequency, 2) * pow((i*dt - source_time_delay), 2));
 
-// 		for (j=1; j<(elements-1); j++){
+	// propagator
 
-// 			A = (U[j+1] - U[j])/( dx);
-// 			B = (U[j] - U[j-1])/( dx);
-// 			if (j==pos){
-// 				RHS[j] = ((1/rho[j])*A - (1/rho[j-1])*B)/( dx)  + source * 1e-3;
-// 			}
-// 			else{
-// 				RHS[j] = ((1/rho[j])*A - (1/rho[j-1])*B)/(dx);
-// 			}
-			
-// 			U_future[j] = rho[j] * pow(vel[j],2) * pow(dt,2) * RHS[j] + 2*U[j] - U_past[j];
-// 		}
+	for (i=0; i<steps; i++){
+		source = -2 * (i*dt - source_time_delay) * pow(frequency, 2) * exp(-1 * pow(frequency, 2) * pow((i*dt - source_time_delay), 2));
+		
 
-// 		U_future[0] = 0;
-// 		U_future[elements-1] = 0;
+		for (j=1; j<(elements_y-1); j++){
+			for (k=1; k<(elements_x-1); k++){
 
-// 		if (i%print_every==0){
-// 			itteration = i/print_every;
+				d2x = (U[j][k-1] - 2*U[j][k] + U[j][k+1])/(pow(dx,2));
 
-// 			print_to_file(elements, U_future, x, itteration);
-// 		}
+				d2y =  (U[j-1][k] - 2*U[j][k] + U[j+1][k])/(pow(dy,2));
 
-// 		for (j=0; j<elements; j++){
-// 			U_past[j] = U[j];
-// 			U[j] = U_future[j];
-// 			U_future[j] = 0;
-// 		}
+				U_future[j][k] = 2*U[j][k] - U_past[j][k] + pow(vel[j][k],2) * pow(dt,2) * (d2y + d2x);
+			}
+		}
 
-// 	}
+		U_future[pos_s_y][pos_s_x] = U_future[pos_s_y][pos_s_x] + pow(dt,2) * source;
 
-// 	system("mv wave_signal*.txt results/");	
-// }
+
+		for (j=0; j<(elements_y-1); j++){
+			U_future[j][0] = 0;
+			U_future[j][elements_x-1] = 0;
+
+		} 
+
+		for (k=0; j<(elements_x-1); k++){
+			U_future[0][k] = 0;
+			U_future[elements_y-1][k] = 0;
+
+		} 
+		
+
+		if (i%print_every==0){
+			itteration = i/print_every;
+			std::cout << "time is " << i*dt << std::endl;
+
+			print_to_file(elements_x, elements_y, U_future, x, y, itteration);
+		}
+
+		for (j=0; j<elements_y; j++){
+			for (k=0; k<elements_x; k++){
+
+				U_past[j][k] = U[j][k];
+				U[j][k] = U_future[j][k];
+				U_future[j][k] = 0;
+			}
+		}
+
+	}
+
+
+	system("mv wave_signal*.txt results/");	
+}
 
 
 
@@ -144,23 +157,36 @@ void Field::initialize(int size_y, int size_x, double **A, std::vector<int>  x_r
 		for (int j=0; j<size_x; j++){
 
 			A[i][j] = val[0];
+
 		}
 	}
 }
 // ------------------------------------------------------------------------------------------------------------------
 
-// void Field::print_to_file(int size, double *A, double *pos, int itteration){
+void Field::print_to_file(int size_x, int size_y, double **A, double *pos_x, double *pos_y, int itteration){
 
-//     std::ofstream ofile;
+	int ii, jj;
+    std::ofstream ofile;
 
-//     ofile.open("wave_signal"+std::to_string(itteration)+".txt"); 
+    std::cout << " printing results " << std::endl;
+
+    ofile.open("wave_signal"+std::to_string(itteration)+".txt"); 
 
 
-//     for (int i=0; i<size; i++){
-//          ofile << pos[i] << " " << A[i] << std::endl;
-//        }
-//     ofile.close();
-// }
+    for (ii=0; ii<size_y; ii=ii+5){
+    	for (jj=0; jj<size_x; jj=jj+5){
+
+         	// std::cout << ii << " " << jj << " " <<  pos_x[jj] << " " << pos_y[ii] << std::endl;
+         	ofile << pos_x[jj] << " " << pos_y[ii] << " " << A[ii][jj] << std::endl;
+       }
+   }
+   // j=20;
+   // for (i=0; i<size_y; i++){
+
+   //   ofile << pos_y[i] << " " << A[i][j] << std::endl;
+   // }
+    ofile.close();
+}
 // ------------------------------------------------------------------------------------------------------------------
 
 
