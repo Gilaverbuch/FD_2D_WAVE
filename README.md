@@ -4,11 +4,11 @@
 To compile the program run "make" in the terminal. It uses GNU g++ compiler. 
 "./wave" will run the program. Results are saved to the results directory. 
 
-The modeling parameters (time, dx_ , stability, frequency_, s_time_delay_ ,  x_source, y_source, print_interval ) are specified in "input.txt" in this order.
+The modeling parameters (time, dx_ , dy_, stability, frequency_, s_time_delay_ ,  x_source, y_source, print_interval ) are specified in "input.txt" in this order.
 
 velocity profile, "vel_profile.txt", contains three arguments in the following order: distance[m]	density[kg/m^3]		velocity [m/s].	
 
-for now ditance defines x_max and y_max 
+for now ditance defines x_max and y_max.  
 
 Easy plotting with gnuplot. Type the following commends in the terminal:
 
@@ -16,5 +16,5 @@ Easy plotting with gnuplot. Type the following commends in the terminal:
 
 -gnuplot		
 
--do for [i=1:set_number] {plotting style is not ready yet };
+-do for [i=1:set_number] {plot  "wave_signal".i.".txt" with image ; pause 0.1; set xrange[0:x_max]; ;set yrange[0:y_max]};
 
