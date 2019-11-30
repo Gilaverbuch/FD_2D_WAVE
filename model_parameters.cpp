@@ -67,6 +67,7 @@ void model_parameters::print_parameters(){
 	std::cout << "dy" << " " << dx << " " << "m" << std::endl;
 	std::cout << "source position (x,y)" << " " << x_s << " " << "m" << " " << y_s << " " << "m" << std::endl;
 	std::cout << "number of elements" << " " << elements_x <<"X" << elements_y << std::endl;
+	std::cout << "simulation time" << " " << time << " " << "sec" <<  std::endl;
 	std::cout << "dt" << " " << dt << " " << "sec" << std::endl;
 	std::cout << "frequency" << " " << frequency << " " << "Hz" << std::endl;
 	std::cout << "source_time_delay" << " " << source_time_delay << " " << "sec" << std::endl;
