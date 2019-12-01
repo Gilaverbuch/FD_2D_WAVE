@@ -1,4 +1,4 @@
-time = 10			; //[sec]
+time = 8			; //[sec]
 dx_ = 5			; //[m]
 dy_ = 5			; //[m]
 stability = 0.5		; //[]

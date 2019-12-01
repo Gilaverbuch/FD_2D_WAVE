@@ -123,6 +123,8 @@ void model_parameters::read_vel_profile(){
 		velocity_range.push_back(c);
 	}
 	layers = x_range.size();
+
+	std::cout << layers << " " << velocity_range[0] << " " << velocity_range[1] << std::endl;
 }
 
 

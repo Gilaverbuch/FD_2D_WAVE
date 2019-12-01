@@ -1,5 +1,5 @@
 # FD_2D_WAVE
-2D finite difference wave propagation. In progress...
+2D finite difference wave propagation. In progress...For now it simulates propagation in horizontally layered media
 
 To compile the program run "make" in the terminal. It uses GNU g++ compiler. 
 "./wave" will run the program. Results are saved to the results directory. 
@@ -8,7 +8,7 @@ The modeling parameters (time, dx_ , dy_, stability, frequency_, s_time_delay_ ,
 
 velocity profile, "vel_profile.txt", contains three arguments in the following order: distance[m]	density[kg/m^3]		velocity [m/s].	
 
-for now ditance defines x_max and y_max.  
+Distance defines  the layers. 
 
 Easy plotting with gnuplot. Type the following commends in the terminal:
 

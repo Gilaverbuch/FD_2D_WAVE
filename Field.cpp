@@ -78,7 +78,7 @@ Field::Field(model_parameters & M){
 
 void Field::Propagator(){
 	
-	double source, d2x, d2y;
+	double source, d2x, d2y, A, B, C, D;
 	int i, j, k, itteration, pos_s_x, pos_s_y;
 	std::cout << "wave propagation!!!" << std::endl;
 	system("rm results/*.txt");
@@ -99,9 +99,17 @@ void Field::Propagator(){
 		for (j=1; j<(elements_y-1); j++){
 			for (k=1; k<(elements_x-1); k++){
 
-				d2x = (U[j][k-1] - 2*U[j][k] + U[j][k+1])/(pow(dx,2));
+				A = (U[j][k+1] - U[j][k])/dx;
+				B = (U[j][k] - U[j][k-1])/dx;
+				C = (U[j+1][k] - U[j][k])/dy;
+				D = (U[j][k] - U[j-1][k])/dy;
 
-				d2y =  (U[j-1][k] - 2*U[j][k] + U[j+1][k])/(pow(dy,2));
+				d2x = ((1/rho[j][k])*A - (1/rho[j][k-1])*B)/(dx);
+				d2y = ((1/rho[j][k])*C - (1/rho[j-1][k])*D)/(dy);
+
+				// d2x = (U[j][k-1] - 2*U[j][k] + U[j][k+1])/(pow(dx,2));
+
+				// d2y =  (U[j-1][k] - 2*U[j][k] + U[j+1][k])/(pow(dy,2));
 
 				U_future[j][k] = 2*U[j][k] - U_past[j][k] + pow(vel[j][k],2) * pow(dt,2) * (d2y + d2x);
 			}
@@ -152,15 +160,26 @@ void Field::Propagator(){
 //private functions
 void Field::initialize(int size_y, int size_x, double **A, std::vector<int>  x_range, std::vector<double> val){
 
-	for (int i=0; i<size_y; i++){
+	int i, k, j, pos1, pos2;
+	pos1 = 0;
 
-		for (int j=0; j<size_x; j++){
+	for (k=0; k<int(x_range.size()); k++){
 
-			A[i][j] = val[0];
+		pos2 = int(x_range[k]/dx);
 
+		for (i=pos1; i<pos2; i++){
+
+			for (j=0; j<size_x; j++){
+
+				A[i][j] = val[k];
+
+			}
 		}
+		pos1 = pos2; 
 	}
+	
 }
+
 // ------------------------------------------------------------------------------------------------------------------
 
 void Field::print_to_file(int size_x, int size_y, double **A, double *pos_x, double *pos_y, int itteration){
