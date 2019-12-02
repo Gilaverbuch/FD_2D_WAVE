@@ -1,0 +1,9 @@
+  
+###> ignore .o files ###
+*.o
+###< ignore .o files ###
+
+
+###> ignore results ###
+results/*.txt
+###< ignore results  ###
