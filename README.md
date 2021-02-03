@@ -1,5 +1,5 @@
 # FD_2D_WAVE
-2D finite difference wave propagation. In progress...For now it simulates propagation in horizontally layered media
+2D finite difference wave propagation. In progress.For now it simulates propagation in horizontally layered media
 
 To compile the program run "make" in the terminal. It uses GNU g++ compiler. 
 "./wave" will run the program. Results are saved to the results directory. 
